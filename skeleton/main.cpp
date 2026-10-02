@@ -17,6 +17,8 @@
 #include "core.hpp"
 #include "RenderUtils.hpp"
 #include "callbacks.hpp"
+#include "Particle.h"
+#include "Vector3D.h"
 
 #include <iostream>
 // Para las escenas del curso, se incluyen los headers de las prácticas y la escena vacía
@@ -55,6 +57,8 @@ PxPvd*                  gPvd        = NULL;
 PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
+
+Particle* gParticle = nullptr;
 
 // Global variables for physics timing. We use a fixed timestep for physics simulation, and accumulate time to determine when to step the physics simulation.
 double gPhysicsTimeAccumulator = 0.0;
@@ -109,7 +113,9 @@ void initPhysics(bool interactive)
 
 	
 	// Cargar la escena inicial
-	SceneManager::instance().changeScene("P0");
+	//SceneManager::instance().changeScene("P0");
+
+	gParticle = new Particle(Vector3D(10.0f, 10.0f, 0.0f), Vector3D(0.0f, 2.5f, 0.0f), Vector3D(0.0f, 2.5f, 0.0f), 1.0f);
 	
 }
 
@@ -136,9 +142,13 @@ void stepPhysics(bool interactive, double t)
 		// En prácticas avanzadas es vital para que el renderizado no lea datos corruptos.
 		gScene->fetchResults(true);
 
+		gParticle->integrate(static_cast<float>(gFixedTimestep));
+
 		gPhysicsTimeAccumulator -= gFixedTimestep;
+		SceneManager::instance().update(gFixedTimestep);
 	}
-	SceneManager::instance().update(t);
+	// Cambio en el repositorio antes del fork
+	//SceneManager::instance().update(t);
 }
 
 
@@ -147,6 +157,13 @@ void cleanupPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
 	 
+	//Particula en main
+	if (gParticle)
+	{
+		gParticle->release();
+		gParticle = nullptr;
+	}
+
 	// Clean scene and dispatcher first to avoid memory leaks
 	if (gScene) {
 		gScene->release();
@@ -185,6 +202,8 @@ void cleanupPhysics(bool interactive)
 		gFoundation->release();
 		gFoundation = nullptr;
 	}
+
+
 }
 
 // Function called when a key is pressed
