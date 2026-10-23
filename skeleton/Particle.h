@@ -7,6 +7,7 @@
 class Particle
 {
 public:
+
 	Particle(Vector3D pos, Vector3D vel)
 	{
 		this->vel = vel;
@@ -33,6 +34,29 @@ public:
 		this->pose = physx::PxTransform(pos._x, pos._y, pos._z);
 		physx::PxShape* shape = CreateShape(physx::PxSphereGeometry(1.5f));
 		this->renderItem = new RenderItem(shape, &pose, Vector4(1.0f, 0.0f, 0.0f, 1.0f));
+		_proyectile = true; 
+		
+	}
+
+	Particle(Vector3D pos, Vector3D vel, Vector3D ac,
+		float masa, float damping)
+		: vel(vel),
+		acel(ac),
+		damping(damping),
+		masa(masa),
+		_proyectile(true),
+		renderItem(nullptr),
+		pose(physx::PxTransform(
+			physx::PxVec3(pos._x, pos._y, pos._z)))
+	{
+		physx::PxShape* shape =
+			CreateShape(physx::PxSphereGeometry(1.5f));
+
+		renderItem = new RenderItem(
+			shape, &pose,
+			Vector4(1.0f, 0.0f, 0.0f, 1.0f));
+
+		if (_proyectile) acel = Vector3D(0.0f, 0.81f, 0.0f);
 	}
 
 	~Particle();
@@ -68,7 +92,7 @@ public:
 
 
 	// Getters
-	const Vector3D& getPosition() const
+	Vector3D getPosition() const
 	{
 		return Vector3D(pose.p.x, pose.p.y, pose.p.z);
 	}
@@ -76,7 +100,10 @@ public:
 	{
 		return vel;
 	}
-
+	const float& getMass() const
+	{
+		return masa;
+	}
 	// Setters
 	void setPosition(const Vector3D& position)
 		{
@@ -85,25 +112,28 @@ public:
 			renderItem->transform = &pose;
 		}
 	}	
-	void setVelocity(const Vector3D& velocity)
+	void setVelocity(const Vector3D& velocity) { vel = velocity;}
+	void setAcceleration(const Vector3D& acceleration) {acel = acceleration;}
+	void setDamping(float damping) { this->damping = damping; }
+	void setMass(float m) { masa = m; }
+
+	bool isProyectile()
 	{
-		vel = velocity;
+		return _proyectile;
 	}
-	void setAcceleration(const Vector3D& acceleration)
-	{
-		acel = acceleration;
-	}
-	void setDamping(float damping)
-	{
-		this->damping = damping;
-	}
+
 private:
 	Vector3D vel;
 	Vector3D acel;
-	float damping;
+
 
 	RenderItem* renderItem;
 	physx::PxTransform pose;
+
+	// proyectil
+	float masa = 10.0f;
+	float damping = 1.0f;
+	bool _proyectile = false;
 
 
 };

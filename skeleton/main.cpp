@@ -25,6 +25,7 @@
 #include "SceneManager.h"
 #include "EmptyScene.h"
 #include "P0S_Scene.h"
+#include "P1S_Scene.h"
 
 #include <foundation/PxSimpleTypes.h>
 #include <PxPhysicsVersion.h> // <- Macros for PhysX version checking
@@ -38,7 +39,7 @@
 #define PVD_HOST "127.0.0.1" // IP localhost for PVD connection
 
 
-std::string display_text = "This is a test";
+
 
 
 using namespace physx;
@@ -58,7 +59,9 @@ PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
-Particle* gParticle = nullptr;
+
+
+
 
 // Global variables for physics timing. We use a fixed timestep for physics simulation, and accumulate time to determine when to step the physics simulation.
 double gPhysicsTimeAccumulator = 0.0;
@@ -110,12 +113,12 @@ void initPhysics(bool interactive)
 	// Registrar las prácticas/escenas del curso
 	SceneManager::instance().registerScene<EmptyScene>("EscenaVacia");
 	SceneManager::instance().registerScene<P0S_Scene>("P0");
+	SceneManager::instance().registerScene<P1S_Scene>("P1");
 
 	
 	// Cargar la escena inicial
-	//SceneManager::instance().changeScene("P0");
+	SceneManager::instance().changeScene("P1");
 
-	gParticle = new Particle(Vector3D(10.0f, 10.0f, 0.0f), Vector3D(0.0f, 2.5f, 0.0f), Vector3D(0.0f, 2.5f, 0.0f), 1.0f);
 	
 }
 
@@ -142,7 +145,7 @@ void stepPhysics(bool interactive, double t)
 		// En prácticas avanzadas es vital para que el renderizado no lea datos corruptos.
 		gScene->fetchResults(true);
 
-		gParticle->integrate(static_cast<float>(gFixedTimestep));
+		
 
 		gPhysicsTimeAccumulator -= gFixedTimestep;
 		SceneManager::instance().update(gFixedTimestep);
@@ -157,12 +160,6 @@ void cleanupPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
 	 
-	//Particula en main
-	if (gParticle)
-	{
-		gParticle->release();
-		gParticle = nullptr;
-	}
 
 	// Clean scene and dispatcher first to avoid memory leaks
 	if (gScene) {
@@ -212,6 +209,8 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	PX_UNUSED(camera);
 
 	SceneManager::instance().keyPress(key, camera);
+
+	
 }
 
 void onCollision(physx::PxActor* actor1, physx::PxActor* actor2)

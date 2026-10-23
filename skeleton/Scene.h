@@ -6,6 +6,8 @@
 // Clase base para las distintas escenas de la aplicación.
 // Provee la interfaz mínima que debe implementar cualquier escena:
 // inicialización, limpieza, actualización por frame y manejo de teclado.
+
+
 class Scene {
 public:
     // Construye la escena con un nombre identificador.
@@ -34,4 +36,6 @@ public:
 protected:
     // Nombre de la escena (útil para identificarla en menús o logs).
     std::string m_name;
+    double m_gFixedTimestep = 1.0 / 60.0;
+    
 };
