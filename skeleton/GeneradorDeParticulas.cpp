@@ -58,6 +58,8 @@ void GeneradorDeParticulas::update(  double dt, const std::vector<ForceGenerator
 
         it->second += static_cast<float>(dt);
 
+        for (ForceGenerator* fuerza : fuerzas)
+            fuerza->update(static_cast<float>(dt));
         // Aplicar todos los generadores de fuerzas
         for (ForceGenerator* fuerza : fuerzas)
         {

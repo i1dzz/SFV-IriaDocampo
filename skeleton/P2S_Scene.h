@@ -7,6 +7,7 @@
 #include "ForceGeneratorGravity.h"
 #include "ForceGeneratorWind.h"
 #include "ForceGeneratorVortex.h"
+#include "ForceGeneratorExplosion.h"
 #include "ForceGenerator.h"
 
 class P2S_Scene :
@@ -28,28 +29,35 @@ public:
         );
 
         fuente = new GeneradorDeParticulas(
-            Vector3D(0.0f, 80.0f, 0.0f),
-            Vector3D(0.0f, 1.0f, 0.0f),
-            Vector3D(0.0f, 0.0f, 0.0f),  5.0f, 2.0f, modelo  );
+            Vector3D(0.0f, 0.0f, 0.0f),
+            Vector3D(0.0f, 0.0f, 0.0f),
+            Vector3D(0.0f, 0.0f, 0.0f),  1.0f, 2.0f, modelo  );
 
         gravedadNormal = new ForceGeneratorGravity(
-            Vector3D(0.0f, -10.0f, 0.0f)
+            Vector3D(0.0f, 0.0f, 0.0f)
+        );
+        explosion = new ForceGeneratorExplosion(
+            Vector3D(0.0f, 0.0f, 0.0f), // Centro
+            200.0f,                      // Radio
+            50000.0f,                    // Intensidad k
+            1.0f                         
         );
 
+        fuerzasFuente.push_back(explosion);
       /* viento = new forcegeneratorwind(
             vector3d(10.0f, 0.0f, 0.0f),
             2.0f
         );*/
 
-        torbellino =
-           new ForceGeneratorVortex(
-               Vector3D(0, 0, 0), // Centro
-               100.0f,            // Radio de influencia
-               5.0f,              // Intensidad K
-               2.0f               // Rozamiento k1
-           );
+        //torbellino =
+        //   new ForceGeneratorVortex(
+        //       Vector3D(0, 0, 0), // Centro
+        //       100.0f,            // Radio de influencia
+        //       5.0f,              // Intensidad k
+        //       2.0f               // Rozamiento
+        //   );
 
-       fuerzasFuente.push_back(torbellino);
+       fuerzasFuente.push_back(explosion);
 
         //fuerzasFuente.push_back(viento);
 
@@ -67,7 +75,11 @@ public:
     {
         std::cout << "Key pressed: " << key << std::endl;
 
-       
+        if (key == 'e' || key == 'E')
+        {
+            if (explosion != nullptr)
+                explosion->activar();
+        }
     }
 
     void cleanup() override
@@ -99,6 +111,11 @@ public:
             torbellino = nullptr;
         }
 
+        if (explosion != nullptr) {
+            delete explosion;
+            explosion = nullptr;
+        }
+
     }
 
 private:
@@ -110,6 +127,7 @@ private:
     ForceGeneratorGravity* gravedadNormal = nullptr;
     ForceGeneratorWind* viento = nullptr; 
     ForceGeneratorVortex* torbellino = nullptr; 
+    ForceGeneratorExplosion* explosion = nullptr; 
     std::vector<ForceGenerator*> fuerzasFuente;
 
     

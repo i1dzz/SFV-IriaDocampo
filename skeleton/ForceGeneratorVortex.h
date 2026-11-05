@@ -25,7 +25,7 @@ protected:
     {
         Vector3D posicion = particle->getPosition();
 
-        // Vector desde el centro hasta la partícula
+        // Vector desde el centro hasta la particula
         Vector3D diferencia = posicion - _centro;
 
         // Distancia al centro en el plano XZ
