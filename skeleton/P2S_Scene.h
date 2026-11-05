@@ -5,7 +5,8 @@
 #include "Particle.h"
 #include "GeneradorDeParticulas.h"
 #include "ForceGeneratorGravity.h"
-#include "ForceGeneratorWInd.h"
+#include "ForceGeneratorWind.h"
+#include "ForceGeneratorVortex.h"
 #include "ForceGenerator.h"
 
 class P2S_Scene :
@@ -29,18 +30,28 @@ public:
         fuente = new GeneradorDeParticulas(
             Vector3D(0.0f, 80.0f, 0.0f),
             Vector3D(0.0f, 1.0f, 0.0f),
-            Vector3D(0.0f, 0.0f, 0.0f),  5.0f, 1.0f, modelo  );
+            Vector3D(0.0f, 0.0f, 0.0f),  5.0f, 2.0f, modelo  );
 
         gravedadNormal = new ForceGeneratorGravity(
             Vector3D(0.0f, -10.0f, 0.0f)
         );
 
-       viento = new ForceGeneratorWind(
-            Vector3D(10.0f, 0.0f, 0.0f),
+      /* viento = new forcegeneratorwind(
+            vector3d(10.0f, 0.0f, 0.0f),
             2.0f
-        );
+        );*/
 
-        fuerzasFuente.push_back(viento);
+        torbellino =
+           new ForceGeneratorVortex(
+               Vector3D(0, 0, 0), // Centro
+               100.0f,            // Radio de influencia
+               5.0f,              // Intensidad K
+               2.0f               // Rozamiento k1
+           );
+
+       fuerzasFuente.push_back(torbellino);
+
+        //fuerzasFuente.push_back(viento);
 
         fuerzasFuente.push_back(gravedadNormal);
     }
@@ -73,10 +84,20 @@ public:
             delete modelo;
             modelo = nullptr;
         }
-        delete gravedadNormal;
-        gravedadNormal = nullptr;
-        delete viento;
-        viento = nullptr;
+        if (gravedadNormal != nullptr) {
+            delete gravedadNormal;
+            gravedadNormal = nullptr;
+        }
+
+        if (viento != nullptr) {
+            delete viento;
+            viento = nullptr;
+        }
+
+        if (torbellino != nullptr) {
+            delete torbellino;
+            torbellino = nullptr;
+        }
 
     }
 
@@ -88,6 +109,7 @@ private:
 
     ForceGeneratorGravity* gravedadNormal = nullptr;
     ForceGeneratorWind* viento = nullptr; 
+    ForceGeneratorVortex* torbellino = nullptr; 
     std::vector<ForceGenerator*> fuerzasFuente;
 
     

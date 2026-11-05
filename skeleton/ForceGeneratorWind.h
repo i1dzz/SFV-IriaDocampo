@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 
 #include "ForceGenerator.h"
 #include "Vector3D.h"
@@ -14,19 +13,26 @@ public:
 
     void updateForce(Particle* particle) override
     {
-        // Diferencia entre velocidad del viento y velocidad de la particula
-        Vector3D diferencia = _velocidadViento - particle->getVelocity();
+        // Obtener la velocidad del viento
+        Vector3D diferencia =
+            getWindVelocity(particle) - particle->getVelocity();
 
         // Componente lineal
         Vector3D fuerza = diferencia * _k1;
 
         // Componente cuadratica
-        fuerza = fuerza + diferencia * (diferencia.magnitude() * _k2);
+        fuerza = fuerza +
+            diferencia * (diferencia.magnitude() * _k2);
 
         particle->addForce(fuerza);
     }
 
-private:
+protected:
+
+    virtual Vector3D getWindVelocity(Particle* particle) const
+    {
+        return _velocidadViento;
+    }
 
     Vector3D _velocidadViento;
     float _k1;

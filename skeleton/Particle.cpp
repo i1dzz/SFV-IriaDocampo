@@ -52,10 +52,12 @@ void
 Particle::integrate(double dt)
 {
 	// 2da ley de Newton
-	Vector3D aceleracion = fuerzaAcumulada * masa;
+	Vector3D aceleracionTotal = acel + fuerzaAcumulada / masa;
+
+	vel = vel + aceleracionTotal * static_cast<float>(dt);
 
 	// Actualizar velocidad
-	vel = vel + aceleracion * static_cast<float>(dt);
+//	vel = vel + acel * static_cast<float>(dt);
 
 	// Actualizar posicion
 	Vector3D pos(pose.p.x, pose.p.y, pose.p.z);
