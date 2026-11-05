@@ -38,6 +38,18 @@ public:
 		
 	}
 
+	Particle(Vector3D pos, Vector3D vel, Vector3D ac, float dam, float m, float size): masa(m)
+	{
+		this->vel = vel;
+		this->acel = ac;
+		this->damping = dam;
+		this->pose = physx::PxTransform(pos._x, pos._y, pos._z);
+		physx::PxShape* shape = CreateShape(physx::PxSphereGeometry(size));
+		this->renderItem = new RenderItem(shape, &pose, Vector4(1.0f, 0.0f, 0.0f, 1.0f));
+		_proyectile = true;
+
+	}
+
 	Particle(Vector3D pos, Vector3D vel, Vector3D ac,
 		float masa, float damping)
 		: vel(vel),
