@@ -24,6 +24,7 @@
     <ClCompile Include="ForceGeneratorVortex.cpp" />
     <ClCompile Include="ForceGeneratorExplosion.cpp" />
     <ClCompile Include="Proyectil.cpp" />
+    <ClCompile Include="SistemaDeParticulas.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -50,6 +51,7 @@
     <ClInclude Include="ForceGeneratorVortex.h" />
     <ClInclude Include="ForceGeneratorExplosion.h" />
     <ClInclude Include="Proyectil.h" />
+    <ClInclude Include="SistemaDeParticulas.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

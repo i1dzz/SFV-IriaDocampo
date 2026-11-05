@@ -13,7 +13,7 @@ public:
 	// el generador dispara particulas a una velocidad constante en una misma direccion y su direcion apenas varia
 	GeneradorDeParticulas(Vector3 vel, Vector3 dir, Vector3 pos);
 	GeneradorDeParticulas(Vector3D vel, Vector3D dir, Vector3D pos,	float vida,	float dispersion, Particle* pM);
-
+	~GeneradorDeParticulas();
 	void cleanup();
 	void update(double dt, const std::vector<ForceGenerator*>& fuerzas);
 

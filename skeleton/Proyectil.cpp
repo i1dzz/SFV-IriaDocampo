@@ -21,14 +21,12 @@ Proyectil::Proyectil(
         ),
 
         Vector3D(
-            camera.q.rotate(
-                physx::PxVec3(0.0f, 0.0f, -1.0f)
+            camera.q.rotate( physx::PxVec3(0.0f, 0.0f, -1.0f)
             ).getNormalized()
         )* velSim,
 
         Vector3D(
-            0.0f,
-            -signo * 9.81f * (velSim / velReal) * (velSim / velReal),
+            0.0f,   -signo * 9.81f * (velSim / velReal) * (velSim / velReal),
             0.0f
         ),
 

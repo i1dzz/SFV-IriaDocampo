@@ -50,13 +50,13 @@ public:
         }
         else if (key == '2')
         {
-            disparar(camera, 55.0f, 0.05f, 100.0f,
+            disparar(camera, 55.0f, 0.1f, 100.0f,
                 1.0f);
         }
         else if (key == '3')
         {
-            disparar(camera, 65.0f, 0.05f, 100.0f,
-                -1.0f);
+            disparar(camera, 35.0f, 0.03f, 100.0f,
+                1.0f);
         }
         else if (key == 'r' || key == 'R')
         {
@@ -83,21 +83,10 @@ private:
     std::string display_text;
 
     
-    void disparar(
-        const physx::PxTransform& camera,
-        float velSim,
-        float masaReal,
-        float velReal,
-        float signo
-    )
+    void disparar(const physx::PxTransform& camera,  float velSim, float masaReal, float velReal, float signo  )
+   
     {
-        Proyectil* p = new Proyectil(
-            camera,
-            velSim,
-            masaReal,
-            velReal,
-            signo
-        );
+        Proyectil* p = new Proyectil( camera, velSim, masaReal, velReal, signo );
 
         proyectiles.push_back(p);
 
