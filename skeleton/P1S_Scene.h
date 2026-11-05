@@ -5,6 +5,7 @@
 #include "RenderUtils.hpp"
 #include "Vector3D.h"
 #include "Particle.h"
+#include "Proyectil.h"
 
 #include <vector>
 #include <string>
@@ -27,7 +28,7 @@ public:
     void update(double dt) override
     {
         // actualizar todos los proyectiles
-        for (Particle* p : proyectiles)
+        for (Proyectil* p : proyectiles)
         {
             if (p != nullptr)
                 p->integrate(dt);
@@ -60,7 +61,7 @@ public:
         else if (key == 'r' || key == 'R')
         {
             // eliminar todos los proyectiles
-            for (Particle* p : proyectiles)
+            for (Proyectil* p : proyectiles)
                 p->release(); 
 
             proyectiles.clear();
@@ -69,7 +70,7 @@ public:
 
     void cleanup() override
     {
-        for (Particle* p : proyectiles)
+        for (Proyectil* p : proyectiles)
             p->release();
 
         proyectiles.clear();
@@ -77,43 +78,31 @@ public:
 
 private:
 
-    std::vector<Particle*> proyectiles;
+    std::vector<Proyectil*> proyectiles;
 
     std::string display_text;
 
     
-    void disparar(const physx::PxTransform& camera,
-        float velSim, float masaReal, float velReal, float signo)
+    void disparar(
+        const physx::PxTransform& camera,
+        float velSim,
+        float masaReal,
+        float velReal,
+        float signo
+    )
     {
-        physx::PxVec3 dirCam = camera.q.rotate(physx::PxVec3(0.0f, 0.0f, -1.0f));
-
-        dirCam.normalize();
-
-        Vector3D direccion(dirCam);
-        Vector3D iniVel = direccion * velSim;
-
-        // mSim = mReal * (vReal / vSim)^2
-        float masaSim = masaReal * (velReal / velSim) * (velReal / velSim);
-
-        // ajustar la gravedad para mantener una trayectoria
-        const float g = 9.81f;
-
-        float gSim = signo * g * (velSim / velReal) * (velSim / velReal);
-
-        Vector3D aceleracion(0.0f, -gSim, 0.0f);
-
-        // hay que evitar que la esfera aparezca dentro de la camara
-        Vector3D iniPos(camera.p.x + direccion._x * 2.0f, camera.p.y + direccion._y * 2.0f, camera.p.z + direccion._z * 2.0f
+        Proyectil* p = new Proyectil(
+            camera,
+            velSim,
+            masaReal,
+            velReal,
+            signo
         );
-
-        Particle* p = new Particle(iniPos, iniVel, aceleracion, 1.0f);
-
-        p->setMass(masaSim);
 
         proyectiles.push_back(p);
 
         std::cout << "Proyectil creado. masa simulada: "
-            << masaSim << std::endl;
+            << p->getMass() << std::endl;
     }
 };
 

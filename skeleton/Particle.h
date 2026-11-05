@@ -13,7 +13,7 @@ public:
 
 	Particle(Vector3D pos, Vector3D vel, Vector3D ac, float dam, float m, float size, Vector4 color = { 0.0f, 0.0f, 0.0f, 1.0f });
 
-	~Particle();
+	virtual ~Particle();
 
 	void integrate(double dt);
 	void release();

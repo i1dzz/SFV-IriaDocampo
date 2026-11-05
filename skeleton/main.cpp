@@ -119,7 +119,7 @@ void initPhysics(bool interactive)
 
 	
 	// Cargar la escena inicial
-	SceneManager::instance().changeScene("P2");
+	SceneManager::instance().changeScene("P1");
 
 	
 }
