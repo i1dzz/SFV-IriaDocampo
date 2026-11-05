@@ -11,7 +11,7 @@ public:
 	Particle(Vector3D pos, Vector3D vel, Vector3D ac, float dam);
 	Particle(Vector3D pos, Vector3D vel, Vector3D ac, float masa, float damping); 
 
-	Particle(Vector3D pos, Vector3D vel, Vector3D ac, float dam, float m, float size);
+	Particle(Vector3D pos, Vector3D vel, Vector3D ac, float dam, float m, float size, Vector4 color = { 0.0f, 0.0f, 0.0f, 1.0f });
 
 	~Particle();
 
@@ -31,6 +31,7 @@ public:
 		if (renderItem) { renderItem->transform = &pose; }
 	}	
 	void setVelocity(const Vector3D& velocity) { vel = velocity;}
+	void setColor(Vector4 col) { renderItem->color = col;}
 	void setAcceleration(const Vector3D& acceleration) {acel = acceleration;}
 	void setDamping(float damping) { this->damping = damping; }
 	void setMass(float m) { masa = m; }

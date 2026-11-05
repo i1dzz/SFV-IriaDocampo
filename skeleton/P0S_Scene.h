@@ -44,7 +44,6 @@ public:
         m_renderItemGreen = new RenderItem(shape, &m_transformGreen, Vector4(0.0f, 1.0f, 0.0f, 1.0f));
 		m_renderItemDot = new RenderItem(dot, &m_transformDot, Vector4(0.0f, 0.0f, 0.0f, 1.0f));
 
-
         m_renderItems.push_back(std::make_pair(m_renderItemBlue, m_transformBlue));
         m_renderItems.push_back(std::make_pair(m_renderItemRed, m_transformRed));
         m_renderItems.push_back(std::make_pair(m_renderItemGreen, m_transformGreen));

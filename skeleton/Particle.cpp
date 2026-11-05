@@ -9,7 +9,7 @@ Particle::Particle(Vector3D pos, Vector3D vel, Vector3D ac, float dam = 1.0f)
 
 	this->pose = physx::PxTransform(pos._x, pos._y, pos._z);
 	physx::PxShape* shape = CreateShape(physx::PxSphereGeometry(1.5f));
-	this->renderItem = new RenderItem(shape, &pose, Vector4(1.0f, 0.0f, 0.0f, 1.0f));
+	this->renderItem = new RenderItem(shape, &pose, Vector4(0.0f, 0.0f, 0.0f, 1.0f));
 	shape->release();
 
 	_proyectile = true;
@@ -21,21 +21,21 @@ Particle::Particle(Vector3D pos, Vector3D vel, Vector3D ac,float masa, float dam
 {
 	physx::PxShape* shape = CreateShape(physx::PxSphereGeometry(1.5f));
 
-	renderItem = new RenderItem(shape, &pose,Vector4(1.0f, 0.0f, 0.0f, 1.0f));
+	renderItem = new RenderItem(shape, &pose,Vector4(0.0f, 0.0f, 0.0f, 1.0f));
 	shape->release();
 
 	if (_proyectile) acel = Vector3D(0.0f, 0.81f, 0.0f);
 }
 
 
-Particle::Particle(Vector3D pos, Vector3D vel, Vector3D ac, float dam, float m, float size) : masa(m), _size(size)
+Particle::Particle(Vector3D pos, Vector3D vel, Vector3D ac, float dam, float m, float size, Vector4 color) : masa(m), _size(size)
 {
 	this->vel = vel;
 	this->acel = ac;
 	this->damping = dam;
 	this->pose = physx::PxTransform(pos._x, pos._y, pos._z);
 	physx::PxShape* shape = CreateShape(physx::PxSphereGeometry(_size));
-	this->renderItem = new RenderItem(shape, &pose, Vector4(1.0f, 0.0f, 0.0f, 1.0f));
+	this->renderItem = new RenderItem(shape, &pose, color);
 	shape->release();
 
 	_proyectile = true;
@@ -94,5 +94,5 @@ Particle::addForce(const Vector3D& fuerza)
 Particle* 
 Particle::clone() const
 {
-	return new Particle(getPosition(),vel,acel, damping,masa,_size);
+	return new Particle(getPosition(),vel,acel, damping,masa,_size, renderItem->color);
 }
