@@ -4,6 +4,7 @@
 #include "Vector3D.h"
 #include <vector>
 #include <iostream>
+#include "ForceGenerator.h"
 
 #include <random>
 class GeneradorDeParticulas{
@@ -11,10 +12,12 @@ public:
 
 	// el generador dispara particulas a una velocidad constante en una misma direccion y su direcion apenas varia
 	GeneradorDeParticulas(Vector3 vel, Vector3 dir, Vector3 pos);
-
+	GeneradorDeParticulas(Vector3D vel, Vector3D dir, Vector3D pos,	float vida,	float dispersion, Particle* pM);
 
 	void cleanup();
-	void update(double dt);
+	void update(double dt, const std::vector<ForceGenerator*>& fuerzas);
+
+
 
 private:
 	std::random_device rd;
@@ -33,8 +36,9 @@ private:
 	// vector de particulas con sus tiempos de vida 
 	std::vector<std::pair<Particle*, float>> particulas; 
 	float _vida; // tiempo de vida de las particulas; 
+	float _dispersion = 0.5f;
 
-
+	Particle* pModel = nullptr; 
 
 };
 

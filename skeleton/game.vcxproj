@@ -262,6 +262,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="callbacks.cpp" />
+    <ClCompile Include="ForceGenerator.cpp" />
+    <ClCompile Include="ForceGeneratorGravity.cpp" />
+    <ClCompile Include="ForceGeneratorWind.cpp" />
     <ClCompile Include="GeneradorDeParticulas.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="P0S_Scene.cpp" />
@@ -279,6 +282,9 @@
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="core.hpp" />
     <ClInclude Include="EmptyScene.h" />
+    <ClInclude Include="ForceGenerator.h" />
+    <ClInclude Include="ForceGeneratorGravity.h" />
+    <ClInclude Include="ForceGeneratorWind.h" />
     <ClInclude Include="GeneradorDeParticulas.h" />
     <ClInclude Include="P0S_Scene.h" />
     <ClInclude Include="P1S_Scene.h" />

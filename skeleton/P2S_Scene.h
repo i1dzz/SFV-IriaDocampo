@@ -1,7 +1,12 @@
 #pragma once
+
+#include<vector>
 #include "Scene.h"
 #include "Particle.h"
 #include "GeneradorDeParticulas.h"
+#include "ForceGeneratorGravity.h"
+#include "ForceGeneratorWInd.h"
+#include "ForceGenerator.h"
 
 class P2S_Scene :
     public Scene
@@ -15,23 +20,35 @@ public:
 
     void init() override
     {
-        fuente = new GeneradorDeParticulas(
-            Vector3D(0.0f, 50.0f, 0.0f),  // velocidad media
-            Vector3D(0.0f, 1.0f, 0.0f),   // apuntan hacia arriba
-            Vector3D(0.0f, 0.0f, 0.0f)   
+        modelo = new Particle(
+            Vector3D(0.0f, 0.0f, 0.0f),
+            Vector3D(0.0f, 0.0f, 0.0f),
+            Vector3D(0.0f, 0.0f, 0.0f), 1.0f, 1.0f, 0.5f
         );
+
+        fuente = new GeneradorDeParticulas(
+            Vector3D(0.0f, 80.0f, 0.0f),
+            Vector3D(0.0f, 1.0f, 0.0f),
+            Vector3D(0.0f, 0.0f, 0.0f),  5.0f, 1.0f, modelo  );
+
+        gravedadNormal = new ForceGeneratorGravity(
+            Vector3D(0.0f, -10.0f, 0.0f)
+        );
+
+       viento = new ForceGeneratorWind(
+            Vector3D(10.0f, 0.0f, 0.0f),
+            2.0f
+        );
+
+        fuerzasFuente.push_back(viento);
+
+        fuerzasFuente.push_back(gravedadNormal);
     }
 
     void update(double dt) override
     {
-        // actualizar todos los proyectiles
-        for (Particle* p : proyectiles)
-        {
-            if (p != nullptr)
-                p->integrate(dt);
-        }
-
-        if(fuente != nullptr) fuente->update(dt);
+        if (fuente != nullptr) 
+            fuente->update(dt, fuerzasFuente);
     }
 
     void keyPress(unsigned char key,
@@ -44,23 +61,35 @@ public:
 
     void cleanup() override
     {
-        for (Particle* p : proyectiles)
-            p->release();
         if (fuente != nullptr)
         {
             fuente->cleanup();
             delete fuente;
             fuente = nullptr;
         }
-        proyectiles.clear();
+
+        if (modelo != nullptr)
+        {
+            delete modelo;
+            modelo = nullptr;
+        }
+        delete gravedadNormal;
+        gravedadNormal = nullptr;
+        delete viento;
+        viento = nullptr;
+
     }
 
 private:
-
-    std::vector<Particle*> proyectiles;
-
     std::string display_text;
 
+    Particle* modelo = nullptr;
     GeneradorDeParticulas* fuente = nullptr;
+
+    ForceGeneratorGravity* gravedadNormal = nullptr;
+    ForceGeneratorWind* viento = nullptr; 
+    std::vector<ForceGenerator*> fuerzasFuente;
+
+    
 };
 
