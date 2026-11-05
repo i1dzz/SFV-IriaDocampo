@@ -116,6 +116,21 @@ public:
             if (explosion != nullptr)
                 explosion->activar();
         }
+        else if (key == '1')
+        {
+            if(sistema->isActivo(fuente))sistema->desactivarEmisor(fuente);
+            else sistema->activarEmisor(fuente);
+        }
+        else if (key == '2')
+        {
+            if (sistema->isActivo(torbellinoGen))sistema->desactivarEmisor(torbellinoGen);
+            else sistema->activarEmisor(torbellinoGen);
+        }
+        else if (key == '3')
+        {
+            if (sistema->isActivo(explosionGen))sistema->desactivarEmisor(explosionGen);
+            else sistema->activarEmisor(explosionGen);
+        }
     }
     void cleanup() override
     {

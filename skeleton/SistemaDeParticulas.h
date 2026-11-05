@@ -13,6 +13,7 @@ private:
     {
         GeneradorDeParticulas* generador;
         std::vector<ForceGenerator*> fuerzas;
+        bool activo = true;
     };
 
     std::vector<Emisor> emisores;
@@ -27,4 +28,22 @@ public:
     void addParticleGenerator( GeneradorDeParticulas* generador, const std::vector<ForceGenerator*>& fuerzas);
 
     void update(double dt);
+
+    void activarEmisor(GeneradorDeParticulas* generador);
+    void desactivarEmisor(GeneradorDeParticulas* generador);
+
+    bool SistemaDeParticulas::isActivo(GeneradorDeParticulas* generador)
+    {
+        auto it = std::find_if(  emisores.begin(),
+            emisores.end(),
+            [generador](const Emisor& emisor) {
+                return emisor.generador == generador;
+            }
+        );
+
+        if (it != emisores.end())
+            return it->activo;
+
+        return false;
+    }
 };

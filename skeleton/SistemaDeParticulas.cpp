@@ -38,15 +38,34 @@ void SistemaDeParticulas::addParticleGenerator(
     }
 }
 
+
 void SistemaDeParticulas::update(double dt)
 {
-    // Actualizar cada generador de fuerzas una sola vez
+    // Actualizar los generadores de fuerzas
     for (ForceGenerator* fuerza : generadoresFuerza)
         fuerza->update(static_cast<float>(dt));
 
-    // Cada emisor utiliza exclusivamente sus propias fuerzas
+    // Actualizar únicamente los emisores activos
     for (Emisor& emisor : emisores)
     {
-        emisor.generador->update(dt, emisor.fuerzas);
+        if (emisor.activo)
+            emisor.generador->update(dt, emisor.fuerzas);
+    }
+}
+void SistemaDeParticulas::activarEmisor(GeneradorDeParticulas* generador)
+{
+    for (Emisor& emisor : emisores)
+    {
+        if (emisor.generador == generador)
+            emisor.activo = true;
+    }
+}
+
+void SistemaDeParticulas::desactivarEmisor(GeneradorDeParticulas* generador)
+{
+    for (Emisor& emisor : emisores)
+    {
+        if (emisor.generador == generador)
+            emisor.activo = false;
     }
 }
