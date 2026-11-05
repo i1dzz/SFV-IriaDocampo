@@ -35,22 +35,31 @@ GeneradorDeParticulas::~GeneradorDeParticulas()
 
 void GeneradorDeParticulas::update(  double dt, const std::vector<ForceGenerator*>& fuerzas)
 {
-   //Calcular nueva particula a partir del modelo calculando su velocidad media
-    Vector3D media = _dir * _vel.magnitude();
-    Vector3D velocidad( media._x + distX(gen) * _dispersion,  media._y + distY(gen) * _dispersion,  media._z + distZ(gen) * _dispersion );
 
+   // Direccion y velocidad media
+    Vector3D media = _dir * _vel.magnitude();
+
+    // Variacion de velocidad mediante distribucion normal
+    Vector3D velocidad(
+        media._x + distX(gen) * _dispersion,
+        media._y + distY(gen) * _dispersion,
+        media._z + distZ(gen) * _dispersion );
+
+    // Variacion de posicion mediante distribucion uniforme
+    Vector3D posicion(
+        _pos.x + distUniforme(gen),
+        _pos.y + distUniforme(gen),
+        _pos.z + distUniforme(gen)
+    );
 
     if (pModel != nullptr)
     {
-        //Clonar particula a 1/60s
         Particle* nueva = pModel->clone();
 
-        // pos y vel de lanzamiento
-        nueva->setPosition(_pos);
+        nueva->setPosition(posicion);
         nueva->setVelocity(velocidad);
 
         particulas.push_back({ nueva, 0.0f });
-     
     }
 
     //Actualizar particulas iterando

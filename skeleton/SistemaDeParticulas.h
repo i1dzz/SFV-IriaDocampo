@@ -24,10 +24,7 @@ public:
 
     void addForceGenerator(ForceGenerator* fuerza);
 
-    void addParticleGenerator(
-        GeneradorDeParticulas* generador,
-        const std::vector<ForceGenerator*>& fuerzas
-    );
+    void addParticleGenerator( GeneradorDeParticulas* generador, const std::vector<ForceGenerator*>& fuerzas);
 
     void update(double dt);
 };

@@ -23,9 +23,14 @@ private:
 	std::random_device rd;
 	std::mt19937 gen{ rd() };
 
+	//Distribucion normal
 	std::normal_distribution<float> distX{ 0.0f, 5.0f };
 	std::normal_distribution<float> distY{ 0.0f, 5.0f };
 	std::normal_distribution<float> distZ{ 0.0f, 5.0f };
+
+	// Distribucion uniforme
+	std::uniform_real_distribution<float> distUniforme{ -5.0f, 5.0f };
+
 	Vector3D _minBounds;
 	Vector3D _maxBounds;
 
